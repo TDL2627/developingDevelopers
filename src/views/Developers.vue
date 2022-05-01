@@ -1,6 +1,29 @@
 <template>
   <div id="developers">
-            <form @submit.prevent="createDeveloper">
+
+ <div v-if="loading" >
+ <div class="half-circle-spinner">
+  <div class="circle circle-1"></div>
+  <div class="circle circle-2"></div>
+</div>
+</div>
+
+<div class="container">
+  <div class="row"  v-for="developer in developers" :key="developer.email">
+    <div class="col-lg-4">
+     <h3>{{developer.fullname}}</h3>
+     <a target="_blank" :href="developer.github">GIT HUB</a>
+    
+    </div>
+    <div class="col-lg-6" >
+       <img class="pp" :src="developer.avatar">
+    </div>
+    <hr>
+  </div>
+</div>
+
+
+            <!-- <form @submit.prevent="createDeveloper">
         <ul>
           <li>FULL NAME :</li>
           <li> <input v-model="fullname" required type="text"></li>
@@ -13,7 +36,7 @@
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-success">Save changes</button>
         </div>
-       </form>
+       </form> -->
   </div>
 </template>
 
@@ -24,44 +47,107 @@ data(){
         developers:[],
         fullname:"",
         email:"",
-        number:"",
+        linkedin:"",
+        avatar:"",
+        password:"",
+        type:"",
         portfolio:"",
-        github:""
+        github:"",
+          loading:false
     }
 },
-methods:{
-   createDeveloper() {
-      fetch("https://mymentor-server.herokuapp.com/note", {
-        method: "POST",
-        body: JSON.stringify({
-          title: this.title,
-          body: this.body
-    
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-      })
-        .then((response) => response.json())
-    
-        .then((json) => {
-          this.loading = false;
-          this.title="";
-          this.body="";
-          alert("Note added");
-          this.$router.go()
-        })
-        .catch((err) => {
-          console.log(err)
-          alert("It failed.Try again please");
-          this.loading = false;
-        });
+
+
+  
+async created () {
+    this.loading = true
+    try {
+      const res = await fetch('https://dev2627.herokuapp.com/developers')
+      this.developers = await res.json()
+      this.loading = false
+    } catch (error) {
+      console.log(error)
+      this.loading = false
     }
-}
+  }
+  ,
+// methods:{
+//    createDeveloper() {
+//       fetch("https://mymentor-server.herokuapp.com/note", {
+//         method: "POST",
+//         body: JSON.stringify({
+//           title: this.title,
+//           body: this.body
+    
+//         }),
+//         headers: {
+//           "Content-type": "application/json; charset=UTF-8",
+//           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+//         },
+//       })
+//         .then((response) => response.json())
+    
+//         .then((json) => {
+//           this.loading = false;
+//           this.title="";
+//           this.body="";
+//           alert("Note added");
+//           this.$router.go()
+//         })
+//         .catch((err) => {
+//           console.log(err)
+//           alert("It failed.Try again please");
+//           this.loading = false;
+//         });
+//     }
+// }
 }
 </script>
 
-<style>
+<style scoped>
+.pp{
+  height: 200px;
+}
+/* loader */
+.half-circle-spinner, .half-circle-spinner * {
+      box-sizing: border-box;
+    }
 
+    .half-circle-spinner {
+      width: 60px;
+      height: 60px;
+      border-radius: 100%;
+     position: fixed;
+      top:45%;
+      left: 50%;
+    }
+
+    .half-circle-spinner .circle {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 100%;
+      border: calc(60px / 10) solid transparent;
+    }
+
+    .half-circle-spinner .circle.circle-1 {
+      border-top-color: white;
+      animation: half-circle-spinner-animation 1s infinite;
+    }
+
+    .half-circle-spinner .circle.circle-2 {
+      border-bottom-color: #1d92ff;
+      animation: half-circle-spinner-animation 1s infinite alternate;
+    }
+
+    @keyframes half-circle-spinner-animation {
+      0% {
+        transform: rotate(0deg);
+
+      }
+      100%{
+        transform: rotate(360deg);
+      }
+    }
 </style>
