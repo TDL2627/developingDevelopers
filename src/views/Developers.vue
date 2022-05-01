@@ -12,8 +12,12 @@
   <div class="row"  v-for="developer in developers" :key="developer.email">
     <div class="col-lg-4">
      <h3>{{developer.fullname}}</h3>
-     <a target="_blank" :href="developer.github">GIT HUB</a>
-    
+     <h5>{{developer.type}}</h5>
+     <p>{{developer.email}}</p>
+     <a target="_blank" :href="developer.github">GIT HUB</a> |
+     <a target="_blank" :href="developer.portfolio">PORTFOLIO</a> |
+     <a target="_blank" :href="developer.linkedin">LINKEDIN</a> 
+
     </div>
     <div class="col-lg-6" >
        <img class="pp" :src="developer.avatar">
