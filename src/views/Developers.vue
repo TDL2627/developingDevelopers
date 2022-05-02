@@ -17,11 +17,9 @@
      <a target="_blank" :href="developer.github">GIT HUB</a> |
      <a target="_blank" :href="developer.portfolio">PORTFOLIO</a> |
      <a target="_blank" :href="developer.linkedin">LINKEDIN</a> 
-
+   <img class="pp" :src="developer.avatar">
     </div>
-    <div class="col-lg-6" >
-       <img class="pp" :src="developer.avatar">
-    </div>
+  
     <hr>
   </div>
 </div>
